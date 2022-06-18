@@ -1,7 +1,5 @@
 import sqlite3 as sq
-from aiogram.types import Message
 
-from source.core.messanger import respond_with_photo
 from source.localization import ru
 
 
