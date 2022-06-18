@@ -24,8 +24,9 @@ async def get_access_handler(message: Message) -> None:
     :param message: Aiogram message object
     :return: global ID with users id and access to admin menu if he is admin
     """
-    await respond(message, ru.MSG_ADMIN_CHECKED, keyboard_admin.button_case_admin)
-    await message.delete()
+    if message.from_user.id in ADMINS:
+        await respond(message, ru.MSG_ADMIN_CHECKED, keyboard_admin.button_case_admin)
+        await message.delete()
 
 
 async def start_cm(message: Message, state=None) -> None:
@@ -126,7 +127,7 @@ async def delete_dish(message: Message) -> None:
     """
     if message.from_user.id in ADMINS:
         for dish in sql_db.get_menu():
-            button = ru.CMD_NLN_DELETE.format(dish[1])
+            button = ru.QRY_DELETE.format(dish[1])
             markup = InlineKeyboardMarkup().add(InlineKeyboardButton(button, callback_data=f"del {dish[1]}"))
             await respond_with_photo(message, dish[0], ru.MSG_DISH.format(dish[1], dish[2], dish[3]), markup)
         await message.delete()
